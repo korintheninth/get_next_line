@@ -1,4 +1,4 @@
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_rough(char *remainder, int fd)
 {
@@ -85,15 +85,15 @@ char	*get_remainder(char *remainder)
 
 char	*get_next_line(int fd)
 {
-	static char	*remainder;
+	static char	*remainder[4096];
 	char		*ret;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	remainder = get_rough(remainder, fd);
-	if (!remainder)
+	remainder[fd] = get_rough(remainder[fd], fd);
+	if (!remainder[fd])
 		return (0);
-	ret = return_line(remainder);
-	remainder = get_remainder(remainder);
+	ret = return_line(remainder[fd]);
+	remainder[fd] = get_remainder(remainder[fd]);
 	return (ret);
 }
